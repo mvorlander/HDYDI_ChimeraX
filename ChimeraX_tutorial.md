@@ -129,12 +129,12 @@ ChimeraX allows logical operators to combine multiple selections:
 
 The `select zone` command in ChimeraX allows users to select atoms and/or surfaces within a specified distance (cutoff) from reference items.
 
-## **Usage**
+ ### Usage ###
 ```
 select zone ref-spec cutoff [other-spec] [extend true|false] [residues true|false]
 ```
 
-## **Parameters**
+ ### Paramaters ###
 
 - **`ref-spec`**: Reference specification; the atoms and/or surfaces from which the distance is measured.
 - **`cutoff`**: The distance cutoff in Ångströms.
@@ -142,7 +142,7 @@ select zone ref-spec cutoff [other-spec] [extend true|false] [residues true|fals
 - **`extend`** *(optional, default: false)*: If `true`, includes the reference items (`ref-spec`) in the selection.
 - **`residues`** *(optional, default: false)*: If `true`, selects entire residues if any of their atoms fall within the zone.
 
-## **Examples**
+###E xamples ###
 
 **Select all protein atoms within 4.5 Å of any ligand**:
 ```
