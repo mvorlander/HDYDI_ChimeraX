@@ -2,42 +2,7 @@
       <title>ChimeraX_tutorial</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <style>
-            pre {
-              position: relative;
-            }
-            .copy-btn {
-              position: absolute;
-              top: 5px;
-              right: 5px;
-              background: #333;
-              color: white;
-              border: none;
-              padding: 5px;
-              font-size: 12px;
-              cursor: pointer;
-              border-radius: 5px;
-            }
-          </style>
-          <script>
-            function copyCode(event) {
-              const codeBlock = event.target.previousElementSibling.innerText;
-              navigator.clipboard.writeText(codeBlock).then(() => {
-                alert("Code copied to clipboard!");
-              });
-            }
-          
-            document.addEventListener("DOMContentLoaded", function () {
-              document.querySelectorAll("pre").forEach((block) => {
-                const button = document.createElement("button");
-                button.className = "copy-btn";
-                button.innerText = "Copy";
-                button.onclick = copyCode;
-                block.appendChild(button);
-              });
-            });
-          </script>
-          
+      
       <link rel="stylesheet" href="file:////Users/matthias.vorlaender/.vscode/extensions/shd101wyy.markdown-preview-enhanced-0.8.15/crossnote/dependencies/katex/katex.min.css">
       
       
@@ -59,9 +24,395 @@
     
       <div class="crossnote markdown-preview  ">
       
-<h1 id="chimerax-tutorial">ChimeraX tutorial </h1>
-<p><code>mm </code><br>
-<code>mm</code></p>
+<h1 id="chimerax-tutorial">ChimeraX Tutorial </h1>
+<hr>
+<h1 id="setting-up-your-chimerax">Setting up your ChimeraX </h1>
+<p>ChimeraX is an extendable program and can be customised to your preferences.</p>
+<h3 id="browsing-and-installing-extensions">Browsing and installing extensions </h3>
+<p>ChimeraX extensions are available through the "Toolshed" and installation is very straightforward. You can access the Toolshed through the toolbar: <code>Tools/ More tools</code>. Popular extensions include <em>Isolde</em>  for structure refining, <em>ArtiaX</em> for electron tomography, and <em>XMAS</em> for protein-crosslinking data display.</p>
+<blockquote>
+<p><strong>💡 Tip:</strong><br>
+The <em>clix</em> bundle provides an improved command line tool and offers  auto-complete functionality and live preview of all available options for a command you are typing</p>
+</blockquote>
+<h3 id="recommended-customisations">Recommended customisations </h3>
+<p>You can customise your ChimeraX thorugh the Preference menu (shortcut: <code>⌘,</code>). Here are my recommendations to set up once you installed ChimeraX:</p>
+<h3 id="editing-chimerax-preferences">Editing ChimeraX preferences </h3>
+<p>Open the Preference menu (shortcut: <code>⌘,</code>) and change the following:</p>
+<p><img src="./screenshots/preference_menu.png" alt="ChimeraX preference screenshot"></p>
+<ul>
+<li><strong>Set the default background color to white</strong></li>
+</ul>
+<p>Most users prefer a white background to match a typical figure display. You can do this in the first tab.</p>
+<ul>
+<li><strong>Set a folder for custom presets and ChimeraX scripts</strong><br>
+The way structures are displayed is highly customisable, and most users (or labs) tend to prefer their own style. For consistency, these styles should be saved in script files (<code>my_style.cxc</code>). Similarly, you should define a color code for your protein of interest in a script if you are preparing figures for a talk or paper. You can quickly apply yoyur favourite styles by placing the <code>.cxc</code> files into a preset folder which you specify in the <code>startup</code> tab. These preests will then appear in the <code>Presets</code> menu in the toolbar. Alternatively you can apply them from the command line with the command <code>preset my_custom_style</code>.</li>
+</ul>
+<p>Here is an example style script:</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code># Cylinder_preset
+graphics selection color black width 5      # Set selection outline to black with width 5
+
+hide                                        # Hide all models initially
+show nucleic                                # Show nucleic acid models
+hide protein|solvent|H                      # Hide protein, solvent, and hydrogen atoms
+surf hide                                   # Hide all surfaces
+
+# Display Styles
+style (protein|nucleic|solvent) &amp; @@draw_mode=0 stick  # Display protein, nucleic, and solvent as sticks
+size protein stickRadius 0.3                # Set stick radius for proteins
+size nucleic stickRadius 0.5                # Set stick radius for nucleic acids
+
+show cartoon                                 # Show cartoon representation for proteins and nucleic acids
+cartoon style ~(nucleic|strand) x round      # Set cartoon style to round for non-nucleic/strand elements
+cartoon style (nucleic|strand) x rect        # Set cartoon style to rectangular for nucleic acids and strands
+cartoon style modeH tube                     # Use tube style for cartoon mode
+
+# Lighting and Camera
+lighting shadows false                       # Disable shadows for clearer visualization
+light soft                                   # Use soft lighting for a smoother appearance
+camera ortho                                 # Set camera to orthographic projection
+
+# Silhouette Settings
+graphics silhouettes true                    # Enable silhouettes
+graphics silhouettes depthJump 0.1            # Set silhouette depth jump to 0.1
+
+# Centering and Pivot
+cofr center showpivot false                  # Center the view and hide pivot point
+
+# Window Configuration
+windowsize 800 800                           # Set window size to 800x800 pixels. Very important for making rendered image dimensions reproducible!
+                                
+# Background and Nucleic Acid Styling
+set bgColor white                             # Set background color to white
+nucleotides fill                             # Fill nucleotides for better visibility
+style nucleic stick                          # Ensure nucleic acids are displayed as sticks
+</code></pre><ul>
+<li>
+<p><strong>Define your startup commands</strong><br>
+If you would like certain commands or tools to be launched automatically, you can define them in the <code>startup</code> tab as well. For example, I recommend installing the enhanced Command line tool <code>Clix</code>, and launch it by outting <code>ui tool show CliX</code>  in the <code>Execute these commands at startup</code> field</p>
+</li>
+<li>
+<p><strong>Restore window size when opening sessions</strong><br>
+In the prefence menu, under <code>Window</code>, tick `Resize graphics window on session restore'. This is important for a consistent size of saved images.</p>
+</li>
+</ul>
+<hr>
+<h2 id="atom-specification-overview">Atom Specification Overview </h2>
+<p>Selection specific regions of your model is essential for structural analysis and figure making in ChimeraX. In ChimeraX, selected regions will be displayed with a green outline. There are several ways to select residues:</p>
+<ul>
+<li><strong>Through the <code>Select</code> menu in the toolbar</strong>. This is good for beginners, but offers only corse control over the selection</li>
+<li><strong>Through the sequence viewer</strong>. You can start the sequence viewer under <code>Tools / Sequence / Show sequence viewer</code> , or with the command <code>sequence chain &lt;selection&gt;</code>. You can then use the mouse to select residues from the sequence viewer, which will be selected in the structure as well</li>
+<li><strong>Through the command line (recommended)</strong>. Although it takes a little practice initially, the command line is the most powerful tool in ChimeraX and allows scripting your workflows, which is essential to make figures reproducibly and change them quickly. The following describes the selection syntax</li>
+</ul>
+<blockquote>
+<p><strong>💡 Tip:</strong><br>
+If you are new to the ChimeraX command line and scripting, notice how every action that the log window displays the command for every action that you execute, no matter if through the toolbars or the command line!</p>
+</blockquote>
+<h3 id="hierarchical-specifiers">Hierarchical Specifiers </h3>
+<p>Hierarchical specifiers are the most common way to select items. They have up to four levels:</p>
+<ol>
+<li><strong>Model</strong> (<code>#</code>)</li>
+<li><strong>Chain</strong> (<code>/</code>)</li>
+<li><strong>Residue</strong> (<code>:</code>)</li>
+<li><strong>Atom</strong> (<code>@</code>)</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Level</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>#</code></td>
+<td>Model</td>
+<td>Model number in ChimeraX, separated by dots (e.g., <code>#1</code>, <code>#1.3</code>).</td>
+<td><code>#1</code>, <code>#1.3</code></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Chain</td>
+<td>Chain identifier (e.g., <code>A</code>, <code>B</code>).</td>
+<td><code>/A</code></td>
+</tr>
+<tr>
+<td><code>:</code></td>
+<td>Residue</td>
+<td>Residue number or name (e.g., <code>:51</code>, <code>:glu</code>).</td>
+<td><code>:51</code>, <code>:glu</code></td>
+</tr>
+<tr>
+<td><code>@</code></td>
+<td>Atom</td>
+<td>Atom name (e.g., <code>@ca</code>).</td>
+<td><code>@ca</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>If you omit a part, ChimeraX selects everything at that level.
+<ul>
+<li><code>#1</code> selects all chains in model 1.</li>
+<li><code>#1:100</code> selects residue 100 in all chains of model 1.</li>
+</ul>
+</li>
+<li>In the examples below, the syntax is always used together with the <code>select</code> commannd, but  many other commands like <code>color</code> also directly accept the selection. So you could either say</li>
+</ul>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>select #1/A
+color sel red
+</code></pre><p>or</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>color #1/A red
+</code></pre><hr>
+<h3 id="other-ways-to-specify-targets">Other Ways to Specify Targets </h3>
+<ul>
+<li>
+<p><strong>Built-in Groups:</strong><br>
+Predefined groups like proteins, helices, strands, ligands, solvents, hydrogen bonds, elements, and functional groups.<br>
+<em>Tip:</em> Use <code>name list builtins true</code> to see all built-in groups.</p>
+</li>
+<li>
+<p><strong>User-Defined Targets:</strong><br>
+Create your own named selections using the <code>name</code> command.</p>
+</li>
+<li>
+<p><strong>Attributes:</strong><br>
+Select items based on their properties.</p>
+</li>
+<li>
+<p><strong>Zones:</strong><br>
+Select items within a certain distance from others.</p>
+</li>
+<li>
+<p><strong>Combinations:</strong><br>
+Combine different selection methods using logical operators.</p>
+</li>
+</ul>
+<hr>
+<h2 id="examples-of-selections">Examples of Selections </h2>
+<ul>
+<li>
+<p><strong>Select all atoms in model 1:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#1</span>
+</code></pre></li>
+<li>
+<p><strong>Select chain B in model 2:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#2/B</span>
+</code></pre></li>
+<li>
+<p><strong>Select residue 45 in chain A of model 3:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#3/A:45</span>
+</code></pre></li>
+<li>
+<p><strong>Select residues 45 to 55 in chain A of model 3:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#3/A:45-55</span>
+</code></pre></li>
+<li>
+<p><strong>Select all lysine residues in any model:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> :lys
+</code></pre></li>
+<li>
+<p><strong>Select alpha carbon atoms in model 1, chain A:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#1/A@ca</span>
+</code></pre></li>
+<li>
+<p><strong>Select multiple atom types:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> @ca,n,c,o
+</code></pre></li>
+<li>
+<p><strong>Select lysine residues in chain B only:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#1/B:lys</span>
+</code></pre></li>
+<li>
+<p><strong>Select all backbone atoms in a protein:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> @ca,n,c,o
+</code></pre></li>
+</ul>
+<hr>
+<h2 id="combining-selections">Combining Selections </h2>
+<p>You can use logical operators to combine selections:</p>
+<ul>
+<li>
+<p><strong>OR (<code>,</code>)</strong>:</p>
+<ul>
+<li>Select chains A and B in model 1:<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#1/A,B</span>
+</code></pre></li>
+<li>Select residues 10 or 20 in model 1:<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#1:10,20</span>
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><strong>NOT (<code>~</code>)</strong>:</p>
+<ul>
+<li>Select everything except nucleic acids:<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> ~nucleic
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><strong>AND (<code>&amp;</code>)</strong>:</p>
+<ul>
+<li>Select all nucleic acids in model 1:<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#1 &amp; nucleic</span>
+</code></pre></li>
+<li>Select all residues in model 1 except nucleic acids:<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> <span class="token comment">#1 &amp;~ nucleic</span>
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="selecting-by-distance-zones">Selecting by Distance (Zones) </h2>
+<p>Use the <code>select zone</code> command to select items within a certain distance from others.</p>
+<h3 id="how-to-use">How to Use </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> zone ref-spec cutoff <span class="token punctuation">[</span>other-spec<span class="token punctuation">]</span> <span class="token punctuation">[</span>extend <span class="token boolean">true</span><span class="token operator">|</span>false<span class="token punctuation">]</span> <span class="token punctuation">[</span>residues <span class="token boolean">true</span><span class="token operator">|</span>false<span class="token punctuation">]</span>
+</code></pre><ul>
+<li><strong>ref-spec</strong>: The reference items to measure from.</li>
+<li><strong>cutoff</strong>: Distance in Ångströms.</li>
+<li><strong>other-spec</strong> <em>(optional)</em>: Items to select near <code>ref-spec</code>. Defaults to all.</li>
+<li><strong>extend</strong> <em>(optional, default: false)</em>: Include <code>ref-spec</code> in the selection if <code>true</code>.</li>
+<li><strong>residues</strong> <em>(optional, default: false)</em>: Select whole residues if any atom is within the zone.</li>
+</ul>
+<h3 id="examples">Examples </h3>
+<ul>
+<li>
+<p><strong>Select protein atoms within 4.5 Å of any ligand:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> zone ligand <span class="token number">4.5</span> protein
+</code></pre></li>
+<li>
+<p><strong>Select atoms within 8 Å of model #1.2:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> zone <span class="token comment">#1.2 8</span>
+</code></pre></li>
+<li>
+<p><strong>Include entire residues within 8 Å of model #1.2:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> zone <span class="token comment">#1.2 8 residues true</span>
+</code></pre></li>
+<li>
+<p><strong>Include reference items in selection:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> zone <span class="token comment">#1/A:50 5 extend true</span>
+</code></pre><p>Explanation: The selection will cintain all atoms within 5 Å around residue 50 in chain A of model #1, as well as the residue 50 itseld</p>
+</li>
+</ul>
+<hr>
+<p>For more details, check the <a href="https://www.cgl.ucsf.edu/chimerax/docs/user/commands/select.html#zone">ChimeraX select command documentation</a>.</p>
+<hr>
+<h2 id="keyboard-shortcuts-to-modify-selections">Keyboard Shortcuts to modify selections </h2>
+<ul>
+<li><strong>Up Arrow</strong> – Broaden the selection</li>
+<li><strong>Down Arrow</strong> – Narrow the selection</li>
+<li><strong>Right/Left Arrow</strong> – Invert selection within selected models</li>
+<li><strong>Shift + Right/Left Arrow</strong> – Invert selection in all models</li>
+</ul>
+<p>For more information, see the <a href="https://www.cgl.ucsf.edu/chimerax/docs/user/commands/atomspec.html">ChimeraX Atom Specification documentation</a>.</p>
+<hr>
+<h2 id="naming-selections">Naming Selections </h2>
+<p>Use the <code>name</code> command to create labels for selections, making future commands easier.</p>
+<h3 id="how-to-use-1">How to Use </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>name <span class="token punctuation">[</span>frozen<span class="token punctuation">]</span> target-name spec
+</code></pre><ul>
+<li><strong>frozen</strong> <em>(optional)</em>: Makes the name refer to the exact items selected at the time, even if the structure changes.</li>
+<li><strong>target-name</strong>: A label starting with a letter, followed by letters, numbers, <code>_</code>, <code>+</code>, or <code>-</code>.</li>
+<li><strong>spec</strong>: The selection to name.</li>
+</ul>
+<h3 id="examples-1">Examples </h3>
+<ol>
+<li>
+<p><strong>Dynamic Target for Transmembrane Residues 34-64 in Chain A:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>name tm1 /A:34-64
+</code></pre><p><em>Usage:</em></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>color tm1 medium blue
+</code></pre><p><em>Explanation:</em> <code>tm1</code> always refers to residues 34-64 in chain A, even if new models are added. So if you open a new model after you defined the name, the command 'color tm1 medium blue' will color <strong>both</strong> models</p>
+</li>
+<li>
+<p><strong>Static Target for All Leucine Residues:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>name frozen leucines :leu
+</code></pre><p><em>Usage:</em></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>color leucines yellow
+</code></pre><p><em>Explanation:</em> <code>leucines</code> refers only to the leucine residues present when it was defined. So if you open a new model after the name was generated, <code>color leucines yellow</code> will only affect the model that was open when you first generated the name!</p>
+</li>
+<li>
+<p><strong>Static Target Based on Current Selection:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token keyword keyword-select">select</span> ligand :<span class="token operator">&lt;</span><span class="token number">5.5</span>
+~select solvent
+name frozen pocket sel
+</code></pre><p><em>Usage:</em></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>color pocket red
+</code></pre><p><em>Explanation:</em> <code>pocket</code> refers to atoms within 5.5 Å of any ligand, excluding solvent, as selected initially.</p>
+</li>
+</ol>
+<h3 id="managing-named-targets">Managing Named Targets </h3>
+<ul>
+<li>
+<p><strong>List all user-defined targets:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>name list
+</code></pre><p><em>Tip:</em> Add <code>builtins true</code> to also list built-in targets.</p>
+</li>
+<li>
+<p><strong>Delete a specific target:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>name delete target-name
+</code></pre></li>
+<li>
+<p><strong>Delete all user-defined targets:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>name delete all
+</code></pre></li>
+</ul>
+<hr>
+<h2 id="matchmaker-command">Matchmaker Command </h2>
+<p>The <code>matchmaker</code> command aligns and superimposes protein or nucleic acid structures by:</p>
+<ol>
+<li><strong>Sequence Alignment:</strong> Matching the sequences of the structures.</li>
+<li><strong>Structural Fitting:</strong> Aligning the structures based on the matched sequences.</li>
+</ol>
+<h3 id="basic-usage">Basic Usage </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>matchmaker <span class="token comment">#model_to_align to #reference_model</span>
+</code></pre><h3 id="examples-2">Examples </h3>
+<ul>
+<li>
+<p><strong>Align Model 2 to Model 1:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>matchmaker <span class="token comment">#2 to #1</span>
+</code></pre></li>
+<li>
+<p><strong>Align Models 3, 4, and 5 to Model 6:</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>matchmaker <span class="token comment">#3-5 to #6</span>
+</code></pre></li>
+</ul>
+<h3 id="key-options">Key Options </h3>
+<ul>
+<li>
+<p><strong>pairing:</strong> How chains are paired for alignment.</p>
+<ul>
+<li><code>bb</code> (default): Best matching chains.</li>
+<li><code>sc</code>: Specify chains in both structures.</li>
+<li><code>sb</code>: Specify a chain in the reference and find the best match in the other structure.</li>
+</ul>
+</li>
+<li>
+<p><strong>matrix:</strong> Substitution matrix for sequence alignment.</p>
+<ul>
+<li><code>BLOSUM-62</code> (default for proteins)</li>
+<li><code>PAM-150</code></li>
+<li><code>NUCLEIC</code> (for nucleic acids)</li>
+</ul>
+</li>
+<li>
+<p><strong>alg:</strong> Alignment algorithm.</p>
+<ul>
+<li><code>nw</code> (default): Needleman-Wunsch</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="additional-information">Additional Information </h2>
+<ul>
+<li>
+<p><strong>Saving Targets:</strong><br>
+User-defined targets are saved within your ChimeraX sessions.</p>
+</li>
+<li>
+<p><strong>Auto-Define Targets:</strong><br>
+Add <code>name</code> commands to your Startup preferences to define targets automatically when ChimeraX starts.</p>
+</li>
+</ul>
+<p>For more information, visit the <a href="https://www.cgl.ucsf.edu/chimerax/docs/user/commands/name.html">ChimeraX name command documentation</a>.</p>
 
       </div>
       
