@@ -1,0 +1,181 @@
+# Generate AF contacts for all predictions for a hit in an AlphaFold screen.
+# (AlphaFold 2 pipeline by Dominik Handler at the VBC cluster)
+# Matthias Vorländer, 2025/02/01
+#
+# Usage:
+#   runscript analyse_af2_screen_hit.cxc <AF_screen_directory> <unique_prediction_string>
+#
+# For example:
+#   runscript analyse_af2_screen_hit.cxc /Volumes/plaschka/shared/alphafold/max.graf/IPscreens/transcription_complexes/2025-01-03_spt6h_vs_spliceosome_all PRP31_HUMAN
+#
+# The script expects five models (ranks 5 to 1) that have been generated and ranked by AlphaFold.
+# The directory structure is assumed to have subdirectories "pdb" and "json" containing the .pdb and .json files, respectively.
+# For proper alignment and mseries slider functioning, ensure no other models are open when running the script.
+
+###########################################################################
+#####                      Rank 5 Model Block                         #####
+###########################################################################
+# Open the PDB file and corresponding JSON file for rank_5.
+echo "Usage: runscript analyse_af2_screen_hit.cxc <AF_screen_directory> <unique_prediction_string>"
+open $1/pdb/*$2*_rank_5*.pdb
+open $1/json/*$2*_rank_5*.json structure last-opened
+
+# Generate AF contacts using the JSON scores.
+alphafold contacts last-opened &/A
+
+# Create pseudobonds for the contacts and label them with residue names and numbers.
+sel last-opened&pbonds
+label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
+
+# Save the pseudobond representation to a file.
+save $1/af_contacts_$2_rank_5.txt format pseudobonds sel true
+echo "AlphaFold contacts (derived from JSON file) saved to $1/af_contacts_$2_rank_5.txt"
+
+# Save the contact residues to a file.
+contacts last-opened&/A restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_5_$2.txt
+
+# Create a named selection for the interface residues.
+name frozen interfaces_$2_rank_5 sel
+
+# Color the model for clarity.
+rainbow last-opened chains palette bupu
+color byhetero
+
+echo "Contact residues were saved to $1/contacts_rank_5_$2.txt"
+echo "Interface residues saved in named selection interfaces_$2_rank_5"
+
+
+###########################################################################
+#####                      Rank 4 Model Block                         #####
+###########################################################################
+# Open the PDB file and corresponding JSON file for rank_4.
+open $1/pdb/*$2*_rank_4*.pdb
+open $1/json/*$2*_rank_4*.json structure last-opened
+
+# Generate AF contacts.
+alphafold contacts last-opened &/A
+
+# Create pseudobonds for the contacts and label them.
+sel last-opened&pbonds
+label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
+
+# Save the contact residues to a file.
+contacts last-opened&/A restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_4_$2.txt
+
+# Create a named selection.
+name frozen interfaces_$2_rank_4 sel
+
+# Color the model.
+rainbow last-opened chains palette bupu
+color byhetero
+
+echo "Contact residues were saved to $1/contacts_rank_4_$2.txt"
+echo "Interface residues saved in named selection interfaces_$2_rank_4"
+
+
+###########################################################################
+#####                      Rank 3 Model Block                         #####
+###########################################################################
+# Open the PDB file and corresponding JSON file for rank_3.
+open $1/pdb/*$2*_rank_3*.pdb
+open $1/json/*$2*_rank_3*.json structure last-opened
+
+# Generate AF contacts.
+alphafold contacts last-opened &/A
+
+# Create pseudobonds for the contacts and label them.
+sel last-opened&pbonds
+label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
+
+# Save the contact residues to a file.
+contacts last-opened&/A restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_3_$2.txt
+
+# Create a named selection.
+name frozen interfaces_$2_rank_3 sel
+
+# Color the model.
+rainbow last-opened chains palette bupu
+color byhetero
+
+echo "Contact residues were saved to $1/contacts_rank_3_$2.txt"
+echo "Interface residues saved in named selection interfaces_$2_rank_3"
+
+
+###########################################################################
+#####                      Rank 2 Model Block                         #####
+###########################################################################
+# Open the PDB file and corresponding JSON file for rank_2.
+open $1/pdb/*$2*_rank_2*.pdb
+open $1/json/*$2*_rank_2*.json structure last-opened
+
+# Generate AF contacts.
+alphafold contacts last-opened &/A
+
+# Create pseudobonds for the contacts and label them.
+sel last-opened&pbonds
+label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
+
+# Save the contact residues to a file.
+contacts last-opened&/A restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_2_$2.txt
+
+# Create a named selection.
+name frozen interfaces_$2_rank_2 sel
+
+# Color the model.
+rainbow last-opened chains palette bupu
+color byhetero
+
+echo "Contact residues were saved to $1/contacts_rank_2_$2.txt"
+echo "Interface residues saved in named selection interfaces_$2_rank_2"
+
+
+###########################################################################
+#####                      Rank 1 Model Block                         #####
+###########################################################################
+# Open the PDB file and corresponding JSON file for rank_1.
+open $1/pdb/*$2*_rank_1*.pdb
+open $1/json/*$2*_rank_1*.json structure last-opened
+
+# Generate AF contacts.
+alphafold contacts last-opened &/A
+
+# Create pseudobonds for the contacts and label them.
+sel last-opened&pbonds
+label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
+
+# Save the contact residues to a file.
+contacts last-opened&/A restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_1_$2.txt
+
+# Create a named selection.
+name frozen interfaces_$2_rank_1 sel
+
+# Color the model.
+rainbow last-opened chains palette bupu
+color byhetero
+
+echo "Contact residues were saved to $1/contacts_rank_1_$2.txt"
+echo "Interface residues saved in named selection interfaces_$2_rank_1"
+
+
+###########################################################################
+#####                Combine Interface Selections                  #####
+###########################################################################
+# Create a named selection that overlaps the interface residues from all predictions.
+name interfaces_overlap_$2 interfaces_$2_rank_5 & interfaces_$2_rank_4 & interfaces_$2_rank_3 & interfaces_$2_rank_2 & interfaces_$2_rank_1
+
+echo "Residues involved in interfaces from all predictions saved in named selection interfaces_overlap_$2"
+echo "Type: info residues interfaces_overlap_$2 to see residues identified in all models!"
+echo "NOTE: Interface residues identified by this script are based on spatial proximity, NOT AlphaFold JSON files!!"
+
+
+###########################################################################
+#####                      Final Model Handling                        #####
+###########################################################################
+# Optionally, move all models (except the last-opened) into the same group.
+mm #*&~last-opened to last-opened&/A
+
+# Create an mseries slider for the five models.
+mseries slider #1-5 title $2 name $2_slider
+mseries #1-5
+
+echo "Use the slider to play through the models!"

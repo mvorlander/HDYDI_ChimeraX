@@ -1,0 +1,9 @@
+name: af_missense
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - requests
+  - matplotlib
+  - pandas

@@ -1,0 +1,42 @@
+# Map Missense Script
+
+This ChimeraX script maps AlphaFold missense scores onto a structure. **Note:**  
+*AF missense scores are currently only available for human proteins.*
+
+---
+
+## Script: map_missense.cxc
+
+```cxc
+# Map AF missense scores onto a structure.
+#
+# Usage: runscript map_missense [uniprot-id-to-fetch-scores-from] [chain-ID to apply mapping to]
+#
+# Required arguments:
+#   1. The UniProt ID from which to fetch missense scores (currently only available for human proteins).
+#   2. The target chain or model ID on which the mapping will be applied.
+Echo "Usage: runscript map_missense [uniprot-id-to-fetch-scores-from] [chain-ID to apply mapping to]"
+# Step 1: Fetch the AlphaFold data for the given UniProt ID.
+alphafold fetch $1
+
+# Step 2: Retrieve the missense score data from the AlphaFold database.
+open $1 fromDatabase alpha_missense format amiss
+
+# Step 3: Associate the retrieved missense data with the target structure (chain/model) specified by $2.
+mutationscores structure $2 mutationSet $1
+
+# Step 4: Label each residue of the target structure with its missense score.
+#         - The labels are generated from the "amiss" score.
+#         - Label height is set to 3.
+#         - The "bluered" palette is used for coloring.
+mutationscores label $2 amiss height 3 mutationSet $1 palette bluered
+
+# Step 5: Define a new score attribute "avg" by averaging over all substitution scores.
+mutationscores define avg fromScore amiss setAttribute true combine mean mutationSet $1
+
+# Step 6: Color the target structure by the defined "avg" attribute.
+#         - Uses the "bluered" color palette and scales to the full range.
+color byattribute r:avg $2 target csab palette bluered range full
+
+# Step 7: Scale the cartoon representation of the structure based on the "avg" missense score.
+cartoon byattribute r:avg $2
