@@ -164,7 +164,7 @@ class StructureMapper:
                 score = row['avg_pathogenicity']
                 color = mcolors.to_hex(color_map(score))
                 chain_list = ",".join(group_info['chains'])
-                chimerax_script.append(f"color /{chain_list}:{position_number} {color}")
+                chimerax_script.append(f"color last-opened &/{chain_list}:{position_number} {color}")
 
         chimerax_script.extend([
             "lighting soft",
@@ -201,7 +201,7 @@ class StructureMapper:
             position_number = ''.join(filter(str.isdigit, row['position']))
             score = row['avg_pathogenicity']
             color = mcolors.to_hex(color_map(score))
-            chimerax_script.append(f"color :{position_number} {color}")
+            chimerax_script.append(f"color last-opened & :{position_number} {color}")
 
         chimerax_script.extend([
             "lighting soft",
