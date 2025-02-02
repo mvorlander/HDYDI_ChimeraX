@@ -1,11 +1,11 @@
-# Generate AF contacts for all predictions from an auto‐alphafold.sh (script by Juraj Ahel) run.
-# Matthias Vorländer, 2025/02/01
+# Generate AF contacts for all predictions from an auto‐alphafold.sh run.
+# (Script by Juraj Ahel; modified by Matthias Vorländer, 2025/02/01)
 #
 # Usage:
 #   runscript analyse_auto-alphafold_prediction.cxc <prediction_directory> <custom_prediction_name>
 #
-# Example:
-#   runscript analyse_auto-alphafold_prediciton.cxc /path/to/auto_af/files hs-C19L1327-538_DBR1-FL
+# For example:
+#   runscript analyse_auto-alphafold_prediction.cxc /path/to/auto_af/files hs-C19L1327-538_DBR1-FL
 #
 # This script processes five predictions (ranks 5, 4, 3, 2, and 1).
 # Note: For these predictions, the first chain is chain B (not chain A).
@@ -13,18 +13,19 @@
 # saves contact files, creates named selections for interface residues,
 # and finally creates an mseries slider to browse the models.
 
+echo "Usage: runscript analyse_auto-alphafold_prediction.cxc <prediction_directory> <custom_prediction_name>"
+
 ###########################################################################
 #####                         Rank 5 Block                            #####
 ###########################################################################
 # Open the PDB file and corresponding scores JSON for rank 5.
-echo "Usage: runscript analyse_auto-alphafold_prediction.cxc <prediction_directory> <custom_prediction_name>"
-open $1/*$2*_unrelaxed_rank_5*.pdb
-open $1/*$2*_unrelaxed_rank_5*_scores.json structure last-opened
+open $1/*_unrelaxed_rank_5*.pdb
+open $1/*_unrelaxed_rank_5*_scores.json structure last-opened
 
 # Generate AF contacts for chain B.
 alphafold contacts last-opened &/B
 
-# Create pseudobonds for the contacts and label them with residue names and numbers.
+# Create pseudobonds for the contacts and label them.
 sel last-opened&pbonds
 label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
 
@@ -35,28 +36,29 @@ echo "AlphaFold contacts (pseudobonds) saved to $1/af_contacts_$2_rank_5.txt"
 # Save the contact residues to a file.
 contacts last-opened&/B restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_5.txt
 
-# Create a named selection for interface residues.
-name frozen interfaces_$2_rank_5 sel
+# Create a named selection for the interface residues, show and style.
+name frozen interface_residues$2_model_5 sel
+show interface_residues$2_model_5
+style interface_residues$2_model_5 ball
 
 # Color the model.
 rainbow last-opened chains palette bupu
 color byhetero
 
-echo "Contact residues were saved to $1/contacts_$2_rank_5.txt"
-echo "Interface residues saved in named selection interfaces_$2_rank_5"
-
+echo "Contact residues saved to $1/contacts_$2_rank_5.txt"
+echo "Interface residues saved in named selection interface_residues$2_model_5"
 
 ###########################################################################
 #####                         Rank 4 Block                            #####
 ###########################################################################
 # Open the PDB file and corresponding scores JSON for rank 4.
-open $1/*$2*_unrelaxed_rank_4*.pdb
-open $1/*$2*_unrelaxed_rank_4*_scores.json structure last-opened
+open $1/*_unrelaxed_rank_4*.pdb
+open $1/*_unrelaxed_rank_4*_scores.json structure last-opened
 
 # Generate AF contacts for chain B.
 alphafold contacts last-opened &/B
 
-# Create pseudobonds and label them.
+# Create pseudobonds for the contacts and label them.
 sel last-opened&pbonds
 label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
 
@@ -67,28 +69,29 @@ echo "AlphaFold contacts (pseudobonds) saved to $1/af_contacts_$2_rank_4.txt"
 # Save the contact residues to a file.
 contacts last-opened&/B restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_4.txt
 
-# Create a named selection for interface residues.
-name frozen interfaces_$2_rank_4 sel
+# Create a named selection for the interface residues, show and style.
+name frozen interface_residues$2_model_4 sel
+show interface_residues$2_model_4
+style interface_residues$2_model_4 ball
 
 # Color the model.
 rainbow last-opened chains palette bupu
 color byhetero
 
-echo "Contact residues were saved to $1/contacts_$2_rank_4.txt"
-echo "Interface residues saved in named selection interfaces_$2_rank_4"
-
+echo "Contact residues saved to $1/contacts_$2_rank_4.txt"
+echo "Interface residues saved in named selection interface_residues$2_model_4"
 
 ###########################################################################
 #####                         Rank 3 Block                            #####
 ###########################################################################
 # Open the PDB file and corresponding scores JSON for rank 3.
-open $1/*$2*_unrelaxed_rank_3*.pdb
-open $1/*$2*_unrelaxed_rank_3*_scores.json structure last-opened
+open $1/*_unrelaxed_rank_3*.pdb
+open $1/*_unrelaxed_rank_3*_scores.json structure last-opened
 
 # Generate AF contacts for chain B.
 alphafold contacts last-opened &/B
 
-# Create pseudobonds and label them.
+# Create pseudobonds for the contacts and label them.
 sel last-opened&pbonds
 label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
 
@@ -99,28 +102,29 @@ echo "AlphaFold contacts (pseudobonds) saved to $1/af_contacts_$2_rank_3.txt"
 # Save the contact residues to a file.
 contacts last-opened&/B restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_3.txt
 
-# Create a named selection for interface residues.
-name frozen interfaces_$2_rank_3 sel
+# Create a named selection for the interface residues, show and style.
+name frozen interface_residues$2_model_3 sel
+show interface_residues$2_model_3
+style interface_residues$2_model_3 ball
 
 # Color the model.
 rainbow last-opened chains palette bupu
 color byhetero
 
-echo "Contact residues were saved to $1/contacts_$2_rank_3.txt"
-echo "Interface residues saved in named selection interfaces_$2_rank_3"
-
+echo "Contact residues saved to $1/contacts_$2_rank_3.txt"
+echo "Interface residues saved in named selection interface_residues$2_model_3"
 
 ###########################################################################
 #####                         Rank 2 Block                            #####
 ###########################################################################
 # Open the PDB file and corresponding scores JSON for rank 2.
-open $1/*$2*_unrelaxed_rank_2*.pdb
-open $1/*$2*_unrelaxed_rank_2*_scores.json structure last-opened
+open $1/*_unrelaxed_rank_2*.pdb
+open $1/*_unrelaxed_rank_2*_scores.json structure last-opened
 
 # Generate AF contacts for chain B.
 alphafold contacts last-opened &/B
 
-# Create pseudobonds and label them.
+# Create pseudobonds for the contacts and label them.
 sel last-opened&pbonds
 label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
 
@@ -131,28 +135,29 @@ echo "AlphaFold contacts (pseudobonds) saved to $1/af_contacts_$2_rank_2.txt"
 # Save the contact residues to a file.
 contacts last-opened&/B restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_2.txt
 
-# Create a named selection for interface residues.
-name frozen interfaces_$2_rank_2 sel
+# Create a named selection for the interface residues, show and style.
+name frozen interface_residues$2_model_2 sel
+show interface_residues$2_model_2
+style interface_residues$2_model_2 ball
 
 # Color the model.
 rainbow last-opened chains palette bupu
 color byhetero
 
-echo "Contact residues were saved to $1/contacts_$2_rank_2.txt"
-echo "Interface residues saved in named selection interfaces_$2_rank_2"
-
+echo "Contact residues saved to $1/contacts_$2_rank_2.txt"
+echo "Interface residues saved in named selection interface_residues$2_model_2"
 
 ###########################################################################
 #####                         Rank 1 Block                            #####
 ###########################################################################
 # Open the PDB file and corresponding scores JSON for rank 1.
-open $1/*$2*_unrelaxed_rank_1*.pdb
-open $1/*$2*_unrelaxed_rank_1*_scores.json structure last-opened
+open $1/*_unrelaxed_rank_1*.pdb
+open $1/*_unrelaxed_rank_1*_scores.json structure last-opened
 
 # Generate AF contacts for chain B.
 alphafold contacts last-opened &/B
 
-# Create pseudobonds and label them.
+# Create pseudobonds for the contacts and label them.
 sel last-opened&pbonds
 label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
 
@@ -163,27 +168,27 @@ echo "AlphaFold contacts (pseudobonds) saved to $1/af_contacts_$2_rank_1.txt"
 # Save the contact residues to a file.
 contacts last-opened&/B restrict cross reveal true select true makePseudobonds false interModel false saveFile $1/contacts_$2_rank_1.txt
 
-# Create a named selection for interface residues.
-name frozen interfaces_$2_rank_1 sel
+# Create a named selection for the interface residues, show and style.
+name frozen interface_residues$2_model_1 sel
+show interface_residues$2_model_1
+style interface_residues$2_model_1 ball
 
 # Color the model.
 rainbow last-opened chains palette bupu
 color byhetero
 
-echo "Contact residues were saved to $1/contacts_$2_rank_1.txt"
-echo "Interface residues saved in named selection interfaces_$2_rank_1"
-
+echo "Contact residues saved to $1/contacts_$2_rank_1.txt"
+echo "Interface residues saved in named selection interface_residues$2_model_1"
 
 ###########################################################################
 #####                    Combine Interface Selections                 #####
 ###########################################################################
-# Combine the interface residue selections from all ranks.
-name interfaces_overlap_$2 interfaces_$2_rank_5 & interfaces_$2_rank_4 & interfaces_$2_rank_3 & interfaces_$2_rank_2 & interfaces_$2_rank_1
+# Combine the interface residue selections from all predictions.
+name interfaces_overlap_$2 interface_residues$2_model_5 & interface_residues$2_model_4 & interface_residues$2_model_3 & interface_residues$2_model_2 & interface_residues$2_model_1
 
 echo "Residues involved in interfaces from all predictions saved in named selection interfaces_overlap_$2"
 echo "Type: info residues interfaces_overlap_$2 to inspect the overlapping interface residues"
-echo "NOTE: Interface residues here are based on spatial proximity, not directly on JSON data."
-
+echo "NOTE: Interface residues here are based on spatial proximity, not directly on JSON data!!"
 
 ###########################################################################
 #####                        Final Model Handling                       #####
@@ -196,3 +201,5 @@ mseries slider #1-5 title $2 name $2_slider
 mseries #1-5
 
 echo "Use the slider to cycle through the models!"
+echo "Pairwise contacts (based on the JSON fle) and all residues involved in an interface (based on a buried surface are of 300 Angstrom or more) have been saved in the input folder for each prediction"
+echo "You might want to increase stringency by calcualting the overlap between all predictions"
