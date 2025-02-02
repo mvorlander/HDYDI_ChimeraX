@@ -1,7 +1,7 @@
 ChimeraX AlphaFold Analysis Scripts
 ===================================
 
-These ChimeraX scripts provide an automated way to analyze AlphaFold predictions. They are designed to process predictions from the Alphafold 3 webserver,  hits from VBC Alhafold2 screen implementation by Dominik Handler, and the `auto‐alphafold.sh` runs by Juraj Ahel. The scritps generate interface contact visualizations, save interface residues to files, align all predicitons and create interactive sliders to browse models easily.
+These ChimeraX scripts provide an automated way to analyze AlphaFold predictions. They are designed to process predictions from the Alphafold 3 webserver,  hits from VBC Alphafold2 screen implementation by Dominik Handler, and the `auto‐alphafold.sh` runs by Juraj Ahel. The scritps generate interface contact visualizations, save interface residues to files, align all predicitons and create interactive sliders to browse models easily.
 
 Overview
 --------
@@ -53,7 +53,7 @@ Installation and Setup
     For example, if your scripts are stored in `/Users/your.name/ChimeraX/scripts`, your startup commands might look like this:
     
     ```
-    alias analysis_af_screen_hit runscript /Users/your.name/ChimeraX/scripts/analysis_af_screen_hit.cxc $1 $2
+    alias analyse_af_screen_hit runscript /Users/your.name/ChimeraX/scripts/analyse_af_screen_hit.cxc $1 $2
     alias analyse_af3 runscript /Users/your.name/ChimeraX/scripts/analyse_af3_prediction.cxc $1 $2
     alias analyse_auto-AF runscript /Users/your.name/ChimeraX/scripts/analyse_auto-alphafold_prediction.cxc $1 $2
     ```
@@ -69,25 +69,27 @@ Once installed, you can run the scripts from the ChimeraX command line using the
 
 *   **First argument:** The path to the directory containing the AlphaFold prediction files.
 *   **Second argument:** A unique string (e.g., a UniProt ID or hit name) that is used in the file name matching and output file naming.
+* **Make sure to run the commands in a clean ChimeraX session without any models open**!.  Otherwise, the alignment of predictions and combination into a slider
+* **Enclose file paths in quoation marks to avoid issues with spaces in file names or special characters!!** 
 
 ### Example Commands
 
 *   **For an AlphaFold screen hit:**
     
     ```
-    analysis_af_screen_hit /path/to/AF/screen/directory UNIQUE_HIT_STRING
+    analyse_af_screen_hit "/path/to/AF/screen/directory" UNIQUE_HIT_STRING
     ```
     
 *   **For an AlphaFold 3 prediction:**
     
     ```
-    analyse_af3 /path/to/AF3/prediction/directory UNIQUE_HIT_STRING
+    analyse_af3 "/path/to/AF3/prediction/directory" CUSTOM NAME
     ```
-    
-*   **For an auto-alphafold.sh prediction:**
+    For AF3 
+*   **For an `auto-alphafold.sh` prediction:**
     
     ```
-    analyse_auto-AF /path/to/auto_AF/prediction/directory UNIQUE_HIT_STRING
+    analyse_auto-AF "/path/to/auto_AF/prediction/directory" UNIQUE_HIT_STRING
     ```
     
 
