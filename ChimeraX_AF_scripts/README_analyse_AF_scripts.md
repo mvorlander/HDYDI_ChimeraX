@@ -15,11 +15,12 @@ There are three main scripts provided, depending on the source of the Alphafold 
 3.  **analyse\_auto-alphafold\_prediction.cxc**
     
      *   **Output:**
-        *   Generates interface contact visualizations by drawing pseudobonds between contacting residues.
-        *   Labels pseudobonds with residue names and numbers.
-        *   Saves contact residue data to text files.
-        *   Creates named selections for interface residues.
-        *   Combines interface selections and creates an mseries slider for model comparison.
+        -   Generates interface contact visualizations by drawing pseudobonds between contacting residues.
+        -   Labels pseudobonds with residue names and numbers.
+        -   Saves contact residue data to text files.
+        -   Creates named selections for interface residues.
+        -   Combines interface selections and creates an mseries slider for model comparison.
+
 ### Visual Outputs
 
 *   **Pseudobonds and Labels:**  
@@ -36,7 +37,7 @@ Installation and Setup
 ----------------------
 
 1.  **Save the Scripts Locally:**  
-    Save the provided `.cxc` script files (e.g., `analysis_af_screen_hit.cxc`, `analyse_af3_prediction.cxc`, and `analyse_auto-alphafold_prediction.cxc`) in a local directory on your computer.  
+    Save the provided `.cxc` script files (e.g., `analyse_af_screen_hit.cxc`, `analyse_af3_prediction.cxc`, and `analyse_auto-alphafold_prediction.cxc`) in a local directory on your computer.  
     _Example Path:_  
     `/Users/your.name/Library/CloudStorage/YourCloud/ChimeraX/scripts/`
     
