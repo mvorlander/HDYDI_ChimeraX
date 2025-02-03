@@ -1,13 +1,11 @@
 # Map Missense Script
 
-This ChimeraX script maps AlphaFold missense scores onto a structure. **Note:**  
-*AF missense scores are currently only available for human proteins.*
+#This ChimeraX script maps AlphaFold missense scores onto a structure. **Note:**  
 
----
+
 
 ## Script: map_missense.cxc
 
-```cxc
 # Map AF missense scores onto a structure.
 #
 # Usage: runscript map_missense [uniprot-id-to-fetch-scores-from] [chain-ID to apply mapping to]
@@ -15,7 +13,7 @@ This ChimeraX script maps AlphaFold missense scores onto a structure. **Note:**
 # Required arguments:
 #   1. The UniProt ID from which to fetch missense scores (currently only available for human proteins).
 #   2. The target chain or model ID on which the mapping will be applied.
-Echo "Usage: runscript map_missense [uniprot-id-to-fetch-scores-from] [chain-ID to apply mapping to]"
+echo "Usage: runscript map_missense [uniprot-id-to-fetch-scores-from] [chain-ID to apply mapping to]"
 # Step 1: Fetch the AlphaFold data for the given UniProt ID.
 alphafold fetch $1
 
