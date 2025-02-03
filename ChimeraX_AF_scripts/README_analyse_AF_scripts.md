@@ -39,7 +39,7 @@ Installation and Setup
 1.  **Save the Scripts Locally:**  
     Save the provided `.cxc` script files (e.g., `analyse_af_screen_hit.cxc`, `analyse_af3_prediction.cxc`, and `analyse_auto-alphafold_prediction.cxc`) in a local directory on your computer.  
     _Example Path:_  
-    `/Users/your.name/Library/CloudStorage/YourCloud/ChimeraX/scripts/`
+    `/Users/your.name/ChimeraX/scripts/`
     
 2.  **Add Startup Aliases:**  
     To make it easy to run these scripts from the ChimeraX command line, add the following alias lines to your ChimeraX startup commands. In ChimeraX, these can be set under **Preferences > Startup**.  
@@ -67,10 +67,9 @@ Usage
 -----
 
 Once installed, you can run the scripts from the ChimeraX command line using the defined aliases. Each script requires two arguments:
-
+* **Make sure to run the commands in a clean ChimeraX session without any models open!**  Otherwise, the alignment of predictions and combination into a slider might get messed up.
 *   **First argument:** The path to the directory containing the AlphaFold prediction files.
 *   **Second argument:** A unique string (e.g., a UniProt ID or hit name) that is used in the file name matching and output file naming.
-* **Make sure to run the commands in a clean ChimeraX session without any models open**!.  Otherwise, the alignment of predictions and combination into a slider
 * **Enclose file paths in quoation marks to avoid issues with spaces in file names or special characters!!** 
 
 ### Example Commands
@@ -80,30 +79,31 @@ Once installed, you can run the scripts from the ChimeraX command line using the
     ```
     analyse_af_screen_hit "/path/to/AF/screen/directory" UNIQUE_HIT_STRING
     ```
+    The UNIQUE_HIT_STRING might be the uniprot name or id of a protein identified in your screen that you want to analyse.
     
 *   **For an AlphaFold 3 prediction:**
     
     ```
-    analyse_af3 "/path/to/AF3/prediction/directory" CUSTOM NAME
+    analyse_af3 "/path/to/AF3/prediction/directory" CUSTOM_NAME
     ```
-    For AF3 
+    The CUSTOM_NAME can be anything and is used for naming outputs.
 *   **For an `auto-alphafold.sh` prediction:**
     
     ```
-    analyse_auto-AF "/path/to/auto_AF/prediction/directory" UNIQUE_HIT_STRING
+    analyse_auto-AF "/path/to/auto_AF/prediction/directory" CUSTOM_NAME
     ```
+    The CUSTOM_NAME can be anything and is used for naming outputs.
+
     
 
-After running the command, the script will process the files, display pseudobonds with labels, save output files (contact residue files and pseudobond data), and generate a slider to browse through the models.
+After running the command, the script will process the files, display pseudobonds with labels, save output files (contact residue files based on buried area calculations, and pairwise residue contacts derived from the JSON file), and generate a slider to browse through the models.
 
 Final Notes
 -----------
 
 *   **File Naming and Organization:**  
-    Make sure your prediction directory structure and file naming conventions match those expected by the scripts. Adjust wildcard patterns if necessary.
-    
-*   **Interface Residues:**  
-    The interface residues identified by these scripts are based on spatial proximity criteria, not directly on the JSON score files. Visual inspection and further validation may be necessary.
+    Make sure to you the correct script depending on the source of your prediction. AF3 and auto-alphafold result    
+    folders are expected to contain the results from one prediction only. 
     
 *   **Customization:**  
     Feel free to modify the scripts as needed to fit your workflow or to add additional processing/visualization features.
