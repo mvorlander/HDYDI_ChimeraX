@@ -5,7 +5,7 @@ This repository contains scripts and tutorials prepared for the **How-do-you-do-
 ## Overview
 
 - **Tutorial Folder:**  
-  Contains an HTML file that provides a step-by-step tutorial on how to run and interpret the analysis of AlphaFold predictions with ChimeraX.
+  Contains an HTML file that provides a step-by-step tutorial on how to analyse of AlphaFold predictions with ChimeraX.
 
 - **Python Folder:**  
   Contains a script to generate AlphaFold missense coloring commands for multi-chain PDBs or for UniProt IDs and can not be directly run in ChimeraX. 
