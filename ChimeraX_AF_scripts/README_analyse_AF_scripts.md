@@ -32,6 +32,7 @@ There are three main scripts provided, depending on the source of the Alphafold 
 *   **Coloring and Slider:**  
     The models are colored (using the "rainbow" and "byhetero" schemes) to help visually distinguish chains and interfaces. An mseries slider is generated so that users can cycle through the different models easily.
     
+![Artboard 1](https://github.com/user-attachments/assets/002f8248-10ca-48d2-9385-2e1070f21db5)
 
 Installation and Setup
 ----------------------
