@@ -1,6 +1,4 @@
-# Generate AF contacts for all predictions for a hit in an AlphaFold screen.
-# (AlphaFold 2 pipeline by Dominik Handler at the VBC cluster)
-# Matthias Vorländer, 2025/02/01
+# Generate AF contacts for all predictions of an AF3 run
 #
 # Usage:
 #   runscript analyse_af3_prediction.cxc <AF_screen_directory> <custom_prediction_name>
@@ -20,7 +18,8 @@ echo "Usage: runscript analyse_af3_prediction.cxc <AF_screen_directory> <custom_
 # Open the structure and its JSON scores for model 4.
 open $1/*model_4*.cif
 open $1/*data_4*.json structure last-opened
-
+hide 
+show c
 # Generate AF contacts (using JSON scores) for chain A (or the first chain)
 alphafold contacts last-opened &/A name model_4_af_contacts_$2
 
@@ -54,6 +53,8 @@ echo "Interface residues saved in named selection interface_residues$2_model_4 a
 open $1/*model_3*.cif
 open $1/*data_3*.json structure last-opened
 
+hide 
+show c
 # Generate AF contacts.
 alphafold contacts last-opened &/A
 
@@ -86,6 +87,8 @@ echo "Interface residues saved in named selection interface_residues$2_model_3 a
 # Open the structure and its JSON scores for model 2.
 open $1/*model_2*.cif
 open $1/*data_2*.json structure last-opened
+hide 
+show c
 
 # Generate AF contacts.
 alphafold contacts last-opened &/A
@@ -119,6 +122,8 @@ echo "Interface residues saved in named selection interface_residues$2_model_2 a
 # Open the structure and its JSON scores for model 1.
 open $1/*model_1*.cif
 open $1/*data_1*.json structure last-opened
+hide 
+show c
 
 # Generate AF contacts.
 alphafold contacts last-opened &/A
@@ -148,6 +153,8 @@ echo "Interface residues saved in named selection interface_residues$2_model_1 a
 # Open the structure and its JSON scores for model 0.
 open $1/*model_0*.cif
 open $1/*data_0*.json structure last-opened
+hide 
+show c
 
 # Generate AF contacts.
 alphafold contacts last-opened &/A
@@ -179,7 +186,7 @@ echo "Interface residues saved in named selection interface_residues$2_model_0 a
 
 #####   Final Steps   #####
 # Move all models (except the last-opened) to a common group (optional)
-mm #*&~last-opened to last-opened&/A
+mm #*&~last-opened&/A to last-opened&/A
 
 # Create an mseries slider for the five models.
 mseries slider #1-5 title $2 name $2_slider
