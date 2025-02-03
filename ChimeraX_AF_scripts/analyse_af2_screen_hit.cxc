@@ -20,6 +20,8 @@ echo "Usage: runscript analyse_af2_screen_hit.cxc <AF_screen_directory> <unique_
 # Open the PDB file and corresponding JSON file for rank_5.
 open $1/pdb/*$2*_rank_5*.pdb
 open $1/json/*$2*_rank_5*.json structure last-opened
+hide 
+show c
 
 # Generate AF contacts using the JSON scores on chain A.
 alphafold contacts last-opened &/A
@@ -56,6 +58,8 @@ echo "Interface residues saved in named selection interface_residues$2_model_5 a
 # Open the PDB file and corresponding JSON file for rank_4.
 open $1/pdb/*$2*_rank_4*.pdb
 open $1/json/*$2*_rank_4*.json structure last-opened
+hide 
+show c
 
 # Generate AF contacts on chain A.
 alphafold contacts last-opened &/A
@@ -88,7 +92,8 @@ echo "Interface residues saved in named selection interface_residues$2_model_4 a
 # Open the PDB file and corresponding JSON file for rank_3.
 open $1/pdb/*$2*_rank_3*.pdb
 open $1/json/*$2*_rank_3*.json structure last-opened
-
+hide 
+show c
 # Generate AF contacts on chain A.
 alphafold contacts last-opened &/A
 
@@ -120,6 +125,8 @@ echo "Interface residues saved in named selection interface_residues$2_model_3 a
 # Open the PDB file and corresponding JSON file for rank_2.
 open $1/pdb/*$2*_rank_2*.pdb
 open $1/json/*$2*_rank_2*.json structure last-opened
+hide 
+show c
 
 # Generate AF contacts on chain A.
 alphafold contacts last-opened &/A
@@ -152,6 +159,8 @@ echo "Interface residues saved in named selection interface_residues$2_model_2 a
 # Open the PDB file and corresponding JSON file for rank_1.
 open $1/pdb/*$2*_rank_1*.pdb
 open $1/json/*$2*_rank_1*.json structure last-opened
+hide 
+show c
 
 # Generate AF contacts on chain A.
 alphafold contacts last-opened &/A
@@ -178,21 +187,12 @@ color byhetero
 echo "Contact residues saved to $1/contacts_$2_rank_1_$2.txt"
 echo "Interface residues saved in named selection interface_residues$2_model_1 and info saved to $1/interface_residues$2_model_1_buriedArea_300.txt"
 
-###########################################################################
-#####                Combine Interface Selections                  #####
-###########################################################################
-# Combine the interface residue selections from all predictions.
-name interfaces_overlap_$2 interface_residues$2_model_5 & interface_residues$2_model_4 & interface_residues$2_model_3 & interface_residues$2_model_2 & interface_residues$2_model_1
-
-echo "Residues involved in interfaces from all predictions saved in named selection interfaces_overlap_$2"
-echo "Type: info residues interfaces_overlap_$2 to inspect the overlapping interface residues"
-echo "NOTE: Interface residues identified by this script are based on spatial proximity, not directly on JSON data!!"
 
 ###########################################################################
 #####                        Final Model Handling                       #####
 ###########################################################################
 # Optionally, group models together.
-mm #*&~last-opened to last-opened&/A
+mm #*&~last-opened&/A to last-opened&/A
 
 # Create an mseries slider for the five models.
 mseries slider #1-5 title $2 name $2_slider
