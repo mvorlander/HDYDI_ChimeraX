@@ -46,7 +46,7 @@ Installation and Setup
     Replace the example path with the path to your scripts directory.
     
     ```
-    alias analysis_af_screen_hit runscript /PATH/TO/YOUR/scripts/analysis_af_screen_hit.cxc $1 $2
+    alias analyse_af_screen_hit runscript /PATH/TO/YOUR/scripts/analysis_af_screen_hit.cxc $1 $2
     alias analyse_af3 runscript /PATH/TO/YOUR/scripts/analyse_af3_prediction.cxc $1 $2
     alias analyse_auto-AF runscript /PATH/TO/YOUR/scripts/analyse_auto-alphafold_prediction.cxc $1 $2
     ```
