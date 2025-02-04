@@ -3,6 +3,8 @@ ChimeraX AlphaFold Analysis Scripts
 
 These ChimeraX scripts provide an automated way to analyze AlphaFold predictions. They are designed to process predictions from the Alphafold 3 webserver,  hits from VBC Alphafold2 screen implementation by Dominik Handler, and the `auto‐alphafold.sh` runs by Juraj Ahel. The scritps generate interface contact visualizations, save interface residues to files, align all predicitons and create interactive sliders to browse models easily.
 
+**Note** The ChimeraX 1.9 Daily release from 2025/02/04 will contain a fix that prevents the scripts form stopping when analyzing AF predictions that have no contacting residues, please update your installation!
+
 Overview
 --------
 
