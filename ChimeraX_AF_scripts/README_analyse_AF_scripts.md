@@ -29,7 +29,7 @@ There are three main scripts provided, depending on the source of the Alphafold 
     The scripts create pseudobonds between residues that are in spatial proximity and display labels with the residue names and numbers for each contacting pair.
     
 *   **Named Selections:**  
-    Each script creates frozen (named) selections for the interface residues (e.g., `interfaces_<unique-string>_rank_X`). A combined selection (`interfaces_overlap_<unique-string>`) is also created, which shows the overlapping residues identified in all predictions.
+    Each script creates frozen (named) selections for the interface residues (e.g., `interfaces_<unique-string>_rank_X`).
     
 *   **Coloring and Slider:**  
     The models are colored (using the "rainbow" and "byhetero" schemes) to help visually distinguish chains and interfaces. An mseries slider is generated so that users can cycle through the different models easily.
