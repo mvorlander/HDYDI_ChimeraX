@@ -1,4 +1,4 @@
-# Generate AF contacts for all predictions of an AF3 run
+ Generate AF contacts for all predictions of an AF3 run
 #
 # Usage:
 #   runscript analyse_af3_prediction.cxc <AF_screen_directory> <custom_prediction_name>
@@ -21,7 +21,7 @@ open $1/*data_4*.json structure last-opened
 hide 
 show c
 # Generate AF contacts (using JSON scores) for chain A (or the first chain)
-alphafold contacts last-opened &/A name model_4_af_contacts_$2
+alphafold contacts last-opened &/A name model_4_af_contacts_$2 dash 6
 
 # Create pseudobonds for the contacts and label them with residue names and numbers.
 sel last-opened&pbonds
@@ -56,7 +56,7 @@ open $1/*data_3*.json structure last-opened
 hide 
 show c
 # Generate AF contacts.
-alphafold contacts last-opened &/A
+alphafold contacts last-opened &/A dash 6
 
 # Create pseudobonds and label them.
 sel last-opened&pbonds
@@ -91,7 +91,7 @@ hide
 show c
 
 # Generate AF contacts.
-alphafold contacts last-opened &/A
+alphafold contacts last-opened &/A dash 6
 
 # Create pseudobonds and label them.
 sel last-opened&pbonds
@@ -126,11 +126,15 @@ hide
 show c
 
 # Generate AF contacts.
-alphafold contacts last-opened &/A
+alphafold contacts last-opened &/A dash 6
 
 # Create pseudobonds and label them.
 sel last-opened&pbonds
 label sel pseudobonds text "{0.atoms[0].residue.name} {0.atoms[0].residue.number} to {0.atoms[1].residue.name} {0.atoms[1].residue.number}"
+
+# Save the pseudobond representation.  
+save $1/af_contacts_model_1_$2.txt format pseudobonds sel true  
+echo "AlphaFold contacts (derived from JSON file) saved to $1/af_contacts_model_1_$2.txt"
 
 # Select interface residues using the interfaces command.
 interfaces select last-opened&/A contacting last-opened&~/A bothSides true
@@ -157,7 +161,7 @@ hide
 show c
 
 # Generate AF contacts.
-alphafold contacts last-opened &/A
+alphafold contacts last-opened &/A dash 6
 
 # Create pseudobonds and label them.
 sel last-opened&pbonds
@@ -186,7 +190,7 @@ echo "Interface residues saved in named selection interface_residues$2_model_0 a
 
 #####   Final Steps   #####
 # Move all models (except the last-opened) to a common group (optional)
-mm #*&~last-opened&/A to last-opened&/A
+mm #*&~last-opened&/B to last-opened&/B
 
 # Create an mseries slider for the five models.
 mseries slider #1-5 title $2 name $2_slider
@@ -195,3 +199,7 @@ mseries #1-5
 echo "Use the slider to go through the models!"
 echo "Pairwise contacts (based on the JSON fle) and all residues involved in an interface (based on a buried surface are of 300 Angstrom or more) have been saved in the input folder for each prediction"
 echo "You might want to increase stringency by calcualting the overlap between all predictions"
+
+# create a key legend for PAE contacts
+key red:20 orange: yellow:10 cornflowerblue: blue:0 size .15,.03 pos .025,.1 ticks true
+2dlab text 'PAE' xpos .075 ypos .15
